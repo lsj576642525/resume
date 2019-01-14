@@ -20,11 +20,17 @@ hr {
   border-top: 1px solid rgb(71, 73, 76);
 }
 
-ul, ol {
+ul,
+ol {
   list-style: none;
 }
 
-h1, h2, h3, h4, h5, h6 {
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
   font-weight: normal;
 }
 
@@ -34,12 +40,45 @@ h1, h2, h3, h4, h5, h6 {
   clear: both;
 }
 
+[data-x].active {
+  outline: 10px solid red;
+}
+
+[data-x].offset {
+  transform: translateY(100px);
+}
+
+[data-x] {
+  transform: translateY(0);
+  transition: all 0.5s;
+}
+
+@keyframes slideUp {
+  0% {
+    transform: translateY(-30px);
+  }
+
+  100% {
+    transform: translateY(0);
+  }
+}
+
 .topNavBar {
-  padding: 20px 0 20px 0;
+  padding: 20px 0;
   position: fixed;
   top: 0;
   left: 0;
   width: 100%;
+  transition: all 0.5s;
+  color: #b7b7b7;
+}
+
+.topNavBar.sticky {
+  background: white;
+  padding: 10px 0;
+  z-index: 1;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.25);
+  color: #3d4451;
 }
 
 .topNavBar-inner {
@@ -60,32 +99,83 @@ h1, h2, h3, h4, h5, h6 {
   float: left;
   margin-left: 17px;
   margin-right: 17px;
+  position: relative;
 }
 
 .topNavBar nav>ul>li>a {
   font-size: 12px;
-  color: #b7b7b7;
+  color: inherit;
   font-weight: bold;
   border-top: 3px solid transparent;
   border-bottom: 3px solid transparent;
   padding-top: 5px;
   padding-bottom: 5px;
   display: block;
+  position: relative;
 }
 
-.topNavBar nav>ul>li>a:hover {
-  border-bottom: 3px solid rgb(232, 59, 53);
+.topNavBar nav>ul>li.active>a::after,
+.topNavBar nav>ul>li.highlight>a::after {
+  content: '';
+  display: block;
+  position: absolute;
+  top: 100%;
+  left: 0;
+  width: 100%;
+  background: #e06567;
+  height: 3px;
+  animation: menuSlide .3s;
+}
+
+@keyframes menuSlide {
+  0% {
+    width: 0;
+  }
+
+  100% {
+    width: 100%;
+  }
+}
+
+.topNavBar .submenu {
+  display: none;
+  position: absolute;
+  right: 0;
+  top: 100%;
+  background: white;
+  color: #3d4451;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
+}
+
+.topNavBar li.active>.submenu {
+  display: block;
+  animation: submenuSlide .3s;
+}
+
+@keyframes submenuSlide {
+  0% {
+    margin-right: 100%;
+  }
+
+  100% {
+    margin-right: 0%;
+  }
+}
+
+.topNavBar .submenu>li {
+  white-space: nowrap;
+  padding: 5px 10px;
 }
 
 .topNavBar .logo {
   font-size: 24px;
   font-family: 'Arial Black';
-  font-weight: 400;
   padding-top: 3px;
   padding-bottom: 4px;
 }
 
 .topNavBar .logo .rs {
+  margin-right: 4px;
   color: rgb(232, 59, 53);
 }
 
@@ -156,7 +246,8 @@ h1, h2, h3, h4, h5, h6 {
   padding: 50px;
 }
 
-.userCard dl dt, .userCard dl dd {
+.userCard dl dt,
+.userCard dl dd {
   float: left;
   padding: 5px 0;
 }
@@ -232,14 +323,16 @@ body>main .downloadResume:hover {
   font-size: 18px;
 }
 
-section.skills, section.portfolio {
+section.skills,
+section.portfolio {
   max-width: 940px;
   margin-left: auto;
   margin-right: auto;
   margin-top: 60px;
 }
 
-section.skills>h2, section.portfolio>h2 {
+section.skills>h2,
+section.portfolio>h2 {
   text-align: center;
   color: rgb(124, 125, 130);
   font-size: 34px;
@@ -275,6 +368,7 @@ section.skills .progressBar {
   background: rgb(141, 141, 141);
   border-radius: 2px;
   margin: 4px 0 40px;
+  overflow: hidden;
 }
 
 section.skills .progressBar>.progress {
@@ -282,6 +376,12 @@ section.skills .progressBar>.progress {
   background: rgb(232, 59, 53);
   width: 70%;
   border-radius: 2px;
+  transform: translateX(0);
+  transition: all 1s;
+}
+
+section.skills.offset .progress {
+  transform: translateX(-100%);
 }
 
 section.portfolio {
@@ -349,6 +449,7 @@ section.portfolio .works {
   position: relative;
 }
 
-section.portfolio .works>.big, section.portfolio .works>.small {
+section.portfolio .works>.big,
+section.portfolio .works>.small {
   position: absolute;
 }
